@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Mission } from '../mission/entities/mission.entity';
 import { CreateMissionInput } from './dto/create-mission.input';
 import { UpdateMissionInput } from './dto/update-mission.input';
+import { Freelancer } from '../freelancer/entities/freelancer.entity';
 
 @Injectable()
 export class MissionService {
-  create(createMissionInput: CreateMissionInput) {
-    return 'This action adds a new mission';
+  constructor(
+    @InjectRepository(Mission)
+    private missionRepository: Repository<Mission>,
+    @InjectRepository(Freelancer)
+    private freelancerRepository: Repository<Freelancer>,
+  ) {}
+
+  async create(createMissionInput: CreateMissionInput): Promise<Mission> {
+    const mission = this.missionRepository.create(createMissionInput);
+    
+    if (createMissionInput.freelancerIds) {
+      const freelancers = await this.freelancerRepository.findByIds(createMissionInput.freelancerIds);
+      mission.freelancers = freelancers;
+    }
+    
+    return this.missionRepository.save(mission);
   }
 
-  findAll() {
-    return `This action returns all mission`;
+  async findAll(): Promise<Mission[]> {
+    return this.missionRepository.find({
+      relations: ['freelancers'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} mission`;
+  async findOne(id: number): Promise<Mission> {
+    const mission = await this.missionRepository.findOne({
+      where: { id },
+      relations: ['freelancers'],
+    });
+    if (!mission) {
+      throw new NotFoundException(`Mission #${id} not found`);
+    }
+    return mission;
   }
 
-  update(id: number, updateMissionInput: UpdateMissionInput) {
-    return `This action updates a #${id} mission`;
+  async update(id: number, updateMissionInput: UpdateMissionInput): Promise<Mission> {
+    const mission = await this.findOne(id);
+    Object.assign(mission, updateMissionInput);
+    
+    if (updateMissionInput.freelancerIds) {
+      const freelancers = await this.freelancerRepository.findByIds(updateMissionInput.freelancerIds);
+      mission.freelancers = freelancers;
+    }
+    
+    return this.missionRepository.save(mission);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} mission`;
+  async remove(id: number): Promise<Mission> {
+    const mission = await this.findOne(id);
+    return this.missionRepository.remove(mission);
   }
 }
