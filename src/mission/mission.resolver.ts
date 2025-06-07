@@ -1,35 +1,39 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { MissionService } from './mission.service';
-import { Mission } from './entities/mission.entity';
+import { Mission } from '../mission/entities/mission.entity';
 import { CreateMissionInput } from './dto/create-mission.input';
 import { UpdateMissionInput } from './dto/update-mission.input';
+import { MissionService } from './mission.service';
 
 @Resolver(() => Mission)
 export class MissionResolver {
   constructor(private readonly missionService: MissionService) {}
 
-  @Mutation(() => Mission)
-  createMission(@Args('createMissionInput') createMissionInput: CreateMissionInput) {
-    return this.missionService.create(createMissionInput);
-  }
-
-  @Query(() => [Mission], { name: 'mission' })
-  findAll() {
+  @Query(() => [Mission])
+  async missions(): Promise<Mission[]> {
     return this.missionService.findAll();
   }
 
-  @Query(() => Mission, { name: 'mission' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Mission, { nullable: true })
+  async mission(@Args('id', { type: () => Int }) id: number): Promise<Mission> {
     return this.missionService.findOne(id);
   }
 
   @Mutation(() => Mission)
-  updateMission(@Args('updateMissionInput') updateMissionInput: UpdateMissionInput) {
+  async createMission(
+    @Args('createMissionInput') createMissionInput: CreateMissionInput,
+  ): Promise<Mission> {
+    return this.missionService.create(createMissionInput);
+  }
+
+  @Mutation(() => Mission)
+  async updateMission(
+    @Args('updateMissionInput') updateMissionInput: UpdateMissionInput,
+  ): Promise<Mission> {
     return this.missionService.update(updateMissionInput.id, updateMissionInput);
   }
 
   @Mutation(() => Mission)
-  removeMission(@Args('id', { type: () => Int }) id: number) {
+  async removeMission(@Args('id', { type: () => Int }) id: number): Promise<Mission> {
     return this.missionService.remove(id);
   }
 }
