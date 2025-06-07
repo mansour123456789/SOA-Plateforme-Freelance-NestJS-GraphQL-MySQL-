@@ -1,35 +1,39 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { LienProfessionnelService } from './lien_professionnel.service';
 import { LienProfessionnel } from './entities/lien_professionnel.entity';
-import { CreateLienProfessionnelInput } from './dto/create-lien_professionnel.input';
-import { UpdateLienProfessionnelInput } from './dto/update-lien_professionnel.input';
+import { CreateLinkInput } from './dto/create-lien_professionnel.input';
+import { UpdateLinkInput } from './dto/update-lien_professionnel.input';
+import { LinkService } from './lien_professionnel.service';
 
 @Resolver(() => LienProfessionnel)
-export class LienProfessionnelResolver {
-  constructor(private readonly lienProfessionnelService: LienProfessionnelService) {}
+export class LinkResolver {
+  constructor(private readonly linkService: LinkService) {}
 
-  @Mutation(() => LienProfessionnel)
-  createLienProfessionnel(@Args('createLienProfessionnelInput') createLienProfessionnelInput: CreateLienProfessionnelInput) {
-    return this.lienProfessionnelService.create(createLienProfessionnelInput);
+  @Query(() => [LienProfessionnel])
+  async liens(): Promise<LienProfessionnel[]> {
+    return this.linkService.findAll();
   }
 
-  @Query(() => [LienProfessionnel], { name: 'lienProfessionnel' })
-  findAll() {
-    return this.lienProfessionnelService.findAll();
-  }
-
-  @Query(() => LienProfessionnel, { name: 'lienProfessionnel' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.lienProfessionnelService.findOne(id);
+  @Query(() => LienProfessionnel, { nullable: true })
+  async lien(@Args('id', { type: () => Int }) id: number): Promise<LienProfessionnel> {
+    return this.linkService.findOne(id);
   }
 
   @Mutation(() => LienProfessionnel)
-  updateLienProfessionnel(@Args('updateLienProfessionnelInput') updateLienProfessionnelInput: UpdateLienProfessionnelInput) {
-    return this.lienProfessionnelService.update(updateLienProfessionnelInput.id, updateLienProfessionnelInput);
+  async createLien(
+    @Args('createLinkInput') createLinkInput: CreateLinkInput,
+  ): Promise<LienProfessionnel> {
+    return this.linkService.create(createLinkInput);
   }
 
   @Mutation(() => LienProfessionnel)
-  removeLienProfessionnel(@Args('id', { type: () => Int }) id: number) {
-    return this.lienProfessionnelService.remove(id);
+  async updateLien(
+    @Args('updateLinkInput') updateLinkInput: UpdateLinkInput,
+  ): Promise<LienProfessionnel> {
+    return this.linkService.update(updateLinkInput.id, updateLinkInput);
+  }
+
+  @Mutation(() => LienProfessionnel)
+  async removeLien(@Args('id', { type: () => Int }) id: number): Promise<LienProfessionnel> {
+    return this.linkService.remove(id);
   }
 }
