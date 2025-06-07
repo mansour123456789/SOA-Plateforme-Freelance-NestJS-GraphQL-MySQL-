@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FreelancerModule } from './freelancer/freelancer.module';
+import { MissionModule } from './mission/mission.module';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { FreelancerModule } from './freelancer/freelancer.module';
       sortSchema: true,
     }),
     FreelancerModule,
+    MissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
