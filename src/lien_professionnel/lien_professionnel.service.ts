@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLienProfessionnelInput } from './dto/create-lien_professionnel.input';
-import { UpdateLienProfessionnelInput } from './dto/update-lien_professionnel.input';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { LienProfessionnel } from './entities/lien_professionnel.entity';
+import { CreateLinkInput } from './dto/create-lien_professionnel.input';
+import { UpdateLinkInput } from './dto/update-lien_professionnel.input';
 
 @Injectable()
 export class LienProfessionnelService {
-  create(createLienProfessionnelInput: CreateLienProfessionnelInput) {
-    return 'This action adds a new lienProfessionnel';
+  constructor(
+    @InjectRepository(LienProfessionnel)
+    private linkRepository: Repository<LienProfessionnel>,
+  ) {}
+
+  async create(createLinkInput: CreateLinkInput): Promise<LienProfessionnel> {
+    const link = this.linkRepository.create(createLinkInput);
+    return this.linkRepository.save(link);
   }
 
-  findAll() {
-    return `This action returns all lienProfessionnel`;
+  async findAll(): Promise<LienProfessionnel[]> {
+    return this.linkRepository.find({
+      relations: ['freelancer'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lienProfessionnel`;
+  async findOne(id: number): Promise<LienProfessionnel> {
+    const link = await this.linkRepository.findOne({
+      where: { id },
+      relations: ['freelancer'],
+    });
+    if (!link) {
+      throw new NotFoundException(`Link #${id} not found`);
+    }
+    return link;
   }
 
-  update(id: number, updateLienProfessionnelInput: UpdateLienProfessionnelInput) {
-    return `This action updates a #${id} lienProfessionnel`;
+  async update(id: number, updateLinkInput: UpdateLinkInput): Promise<LienProfessionnel> {
+    const link = await this.findOne(id);
+    Object.assign(link, updateLinkInput);
+    return this.linkRepository.save(link);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} lienProfessionnel`;
+  async remove(id: number): Promise<LienProfessionnel> {
+    const link = await this.findOne(id);
+    return this.linkRepository.remove(link);
   }
 }
