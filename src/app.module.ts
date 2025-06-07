@@ -5,6 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { FreelancerModule } from './freelancer/freelancer.module';
 
 
 @Module({
@@ -24,7 +25,7 @@ import { AppService } from './app.service';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
- 
+    FreelancerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
