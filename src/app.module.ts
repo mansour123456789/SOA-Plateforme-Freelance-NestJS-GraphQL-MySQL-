@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FreelancerModule } from './freelancer/freelancer.module';
 import { MissionModule } from './mission/mission.module';
+import { LienProfessionnelModule } from './lien_professionnel/lien_professionnel.module';
 
 
 @Module({
@@ -28,6 +29,7 @@ import { MissionModule } from './mission/mission.module';
     }),
     FreelancerModule,
     MissionModule,
+    LienProfessionnelModule,
   ],
   controllers: [AppController],
   providers: [AppService],
