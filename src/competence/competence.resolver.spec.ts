@@ -1,13 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CompetenceResolver } from './competence.resolver';
-import { CompetenceService } from './competence.service';
 
 describe('CompetenceResolver', () => {
   let resolver: CompetenceResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CompetenceResolver, CompetenceService],
+      providers: [CompetenceResolver],
     }).compile();
 
     resolver = module.get<CompetenceResolver>(CompetenceResolver);
