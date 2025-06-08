@@ -1,8 +1,8 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-import { Competence } from '../competence/competence.entity';
-import { LienProfessionnel } from '../link/link.entity';
-import { Mission } from '../mission/mission.entity';
+import { Competence } from '../../competence/competence.entity';
+import { LienProfessionnel } from '../../lien_professionnel/entities/lien_professionnel.entity';
+import { Mission } from '../../mission/entities/mission.entity';
 
 @ObjectType()
 @Entity()

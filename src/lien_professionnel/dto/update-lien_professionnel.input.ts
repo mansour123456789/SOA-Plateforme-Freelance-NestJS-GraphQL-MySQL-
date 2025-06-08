@@ -1,8 +1,8 @@
-import { CreateLienProfessionnelInput } from './create-lien_professionnel.input';
+import { CreateLinkInput } from './create-lien_professionnel.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateLienProfessionnelInput extends PartialType(CreateLienProfessionnelInput) {
+export class UpdateLienProfessionnelInput extends PartialType(CreateLinkInput) {
   @Field(() => Int)
   id: number;
 }

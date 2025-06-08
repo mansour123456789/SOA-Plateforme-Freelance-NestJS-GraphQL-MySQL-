@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LienProfessionnel } from './entities/lien_professionnel.entity';
 import { CreateLinkInput } from './dto/create-lien_professionnel.input';
-import { UpdateLinkInput } from './dto/update-lien_professionnel.input';
+import { UpdateLienProfessionnelInput } from '../lien_professionnel/dto/update-lien_professionnel.input';
 
 @Injectable()
 export class LienProfessionnelService {
@@ -34,7 +34,7 @@ export class LienProfessionnelService {
     return link;
   }
 
-  async update(id: number, updateLinkInput: UpdateLinkInput): Promise<LienProfessionnel> {
+  async update(id: number, updateLinkInput: UpdateLienProfessionnelInput): Promise<LienProfessionnel> {
     const link = await this.findOne(id);
     Object.assign(link, updateLinkInput);
     return this.linkRepository.save(link);

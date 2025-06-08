@@ -1,12 +1,12 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { LienProfessionnel } from './entities/lien_professionnel.entity';
 import { CreateLinkInput } from './dto/create-lien_professionnel.input';
-import { UpdateLinkInput } from './dto/update-lien_professionnel.input';
-import { LinkService } from './lien_professionnel.service';
+import { UpdateLienProfessionnelInput } from './dto/update-lien_professionnel.input';
+import { LienProfessionnelService } from './lien_professionnel.service';
 
 @Resolver(() => LienProfessionnel)
 export class LinkResolver {
-  constructor(private readonly linkService: LinkService) {}
+  constructor(private readonly linkService: LienProfessionnelService) {}
 
   @Query(() => [LienProfessionnel])
   async liens(): Promise<LienProfessionnel[]> {
@@ -27,7 +27,7 @@ export class LinkResolver {
 
   @Mutation(() => LienProfessionnel)
   async updateLien(
-    @Args('updateLinkInput') updateLinkInput: UpdateLinkInput,
+    @Args('updateLinkInput') updateLinkInput: UpdateLienProfessionnelInput,
   ): Promise<LienProfessionnel> {
     return this.linkService.update(updateLinkInput.id, updateLinkInput);
   }
