@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { FreelancerModule } from './freelancer/freelancer.module';
 import { MissionModule } from './mission/mission.module';
 import { LienProfessionnelModule } from './lien_professionnel/lien_professionnel.module';
+import { CompetenceModule } from './competence/competence.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { LienProfessionnelModule } from './lien_professionnel/lien_professionnel
     FreelancerModule,
     MissionModule,
     LienProfessionnelModule,
+    CompetenceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
