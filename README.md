@@ -7,13 +7,13 @@ Ce projet est une API GraphQL construite avec NestJS pour gérer des freelancers
 - NestJS
 - GraphQL
 - TypeORM
-- PostgreSQL
+- SQL
 - TypeScript
 
 ## Prérequis
 
 - Node.js (v14 ou supérieur)
-- PostgreSQL
+- SQL
 - npm ou yarn
 
 ## Installation
@@ -30,12 +30,12 @@ npm install
 ```
 
 3. Configurer la base de données :
-- Créer une base de données PostgreSQL
+- Créer une base de données SQL
 - Configurer les variables d'environnement dans `.env` :
 ```env
 DATABASE_HOST=localhost
 DATABASE_PORT=5432
-DATABASE_USERNAME=postgres
+DATABASE_USERNAME=sql_name
 DATABASE_PASSWORD=votre_mot_de_passe
 DATABASE_NAME=freelancer_db
 ```
