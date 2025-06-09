@@ -1,82 +1,166 @@
-# Plateforme Freelance
+# Gestion de Freelancers - API GraphQL
 
-Une plateforme moderne pour connecter les freelances et les clients, construite avec les dernières technologies web.
+Ce projet est une API GraphQL construite avec NestJS pour gérer des freelancers, leurs compétences, liens professionnels et missions.
 
-## 🚀 Fonctionnalités
+## Technologies Utilisées
 
-- Système d'authentification complet
-- Profils freelances détaillés
-- Système de recherche avancé
-- Messagerie en temps réel
-- Système de paiement sécurisé
-- Gestion des projets
-- Système de notation et d'avis
+- NestJS
+- GraphQL
+- TypeORM
+- PostgreSQL
+- TypeScript
 
-## 🛠️ Technologies Utilisées
-
-- Frontend: React.js avec TypeScript
-- Backend: Node.js avec Express
-- Base de données: MongoDB
-- Authentification: JWT
-- Paiements: Stripe
-- Messagerie: Socket.io
-- Style: Tailwind CSS
-
-## 📋 Prérequis
+## Prérequis
 
 - Node.js (v14 ou supérieur)
-- MongoDB
+- PostgreSQL
 - npm ou yarn
 
-## 🔧 Installation
+## Installation
 
-1. Cloner le repository
+1. Cloner le repository :
 ```bash
 git clone [URL_DU_REPO]
+cd [NOM_DU_PROJET]
 ```
 
-2. Installer les dépendances
+2. Installer les dépendances :
 ```bash
-# Installation des dépendances frontend
-cd frontend
-npm install
-
-# Installation des dépendances backend
-cd ../backend
 npm install
 ```
 
-3. Configurer les variables d'environnement
+3. Configurer la base de données :
+- Créer une base de données PostgreSQL
+- Configurer les variables d'environnement dans `.env` :
+```env
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=votre_mot_de_passe
+DATABASE_NAME=freelancer_db
+```
+
+## Structure du Projet
+
+Le projet contient 4 entités principales :
+
+1. **Freelancer**
+   - Informations personnelles
+   - Compétences
+   - Liens professionnels
+   - Missions
+
+2. **Competence**
+   - Nom
+   - Niveau
+   - Association avec Freelancer
+
+3. **LienProfessionnel**
+   - Titre
+   - URL
+   - Association avec Freelancer
+
+4. **Mission**
+   - Titre
+   - Description
+   - Association avec Freelancers
+
+## Commandes Disponibles
+
 ```bash
-# Dans le dossier backend
-cp .env.example .env
-# Remplir les variables nécessaires dans le fichier .env
+# Développement
+npm run start:dev
+
+# Production
+npm run build
+npm run start:prod
+
+# Génération de ressources
+nest generate resource [nom_ressource]
+
+# Génération de modules
+nest g module [nom_module]
+
+# Génération de resolvers
+nest g resolver [nom_resolver]
+
+# Génération de services
+nest g service [nom_service]
 ```
 
-4. Lancer l'application
+## API GraphQL
+
+L'API expose les opérations suivantes pour chaque entité :
+
+### Freelancer
+- Création
+- Lecture (unique et liste)
+- Mise à jour
+- Suppression
+
+### Competence
+- Création
+- Lecture (unique et liste)
+- Mise à jour
+- Suppression
+
+### LienProfessionnel
+- Création
+- Lecture (unique et liste)
+- Mise à jour
+- Suppression
+
+### Mission
+- Création
+- Lecture (unique et liste)
+- Mise à jour
+- Suppression
+
+## Exemple d'Utilisation
+
+```graphql
+# Créer un Freelancer
+mutation {
+  createFreelancer(createFreelancerInput: {
+    fullName: "Ali Ben Youssef",
+    email: "ali@example.com",
+    phone: "+216 22 333 444"
+  }) {
+    id
+    fullName
+    email
+  }
+}
+
+# Lire tous les Freelancers
+query {
+  freelancers {
+    id
+    fullName
+    email
+    competences {
+      id
+      nom
+      niveau
+    }
+  }
+}
+```
+
+## Tests
+
 ```bash
-# Lancer le backend
-cd backend
-npm run dev
+# Tests unitaires
+npm run test
 
-# Lancer le frontend
-cd frontend
-npm run dev
+# Tests e2e
+npm run test:e2e
+
+# Couverture de tests
+npm run test:cov
 ```
 
-## 📝 Structure du Projet
-
-```
-freelance-platform/
-├── frontend/          # Application React
-├── backend/           # Serveur Node.js
-├── docs/             # Documentation
-└── README.md
-```
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues ! N'hésitez pas à :
+## Contribution
 
 1. Fork le projet
 2. Créer une branche pour votre fonctionnalité
@@ -84,10 +168,6 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 4. Pousser vers la branche
 5. Ouvrir une Pull Request
 
-## 📄 Licence
+## Licence
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
-## 📧 Contact
-
-Pour toute question ou suggestion, n'hésitez pas à nous contacter à [VOTRE_EMAIL].
+MIT
